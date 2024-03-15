@@ -1,0 +1,10 @@
+.vs/
+system/
+vendor/
+writable/
+
+build/
+
+.env
+
+*.zip
