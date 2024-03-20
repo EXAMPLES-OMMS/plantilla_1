@@ -13,8 +13,9 @@ use App\Libraries\Componentes;
         <?php foreach ($campos as $r) { ?>
             <td title="<?php echo $tmp[$r["Field"]]; ?>">
                 <?php
-                $format = $r["Format"];
-                if ($format == "no") {
+                // $format = $r["Format"];
+                $format = $r["Extra"]["Type"];
+                if ($format == "text") {
                     echo $tmp[$r["Field"]];
                 } else if ($format == "archivos") {
                     $server = $tmp["expe_server"];
@@ -55,6 +56,11 @@ use App\Libraries\Componentes;
                     }
                 } else if ($format == "semaforo") {
                     echo "123";
+                } else if ($format == "selectDB") {
+                    $objs = $r['Extra']['Data'];
+                    array_map(function ($obj) use ($tmp, $r)  {
+                        if ($obj->id == $tmp[$r['Field']]) echo $obj->nombre;
+                    }, $objs);
                 }
                 ?>
             </td>
@@ -111,13 +117,13 @@ use App\Libraries\Componentes;
         const modal = $('#<?php echo $grilla_ide ?>_editar');
         const form = $('#<?php echo $grilla_ide ?>_editar form');
         const param = {
-            ide: modal.data('id'),
+            ide: modal.attr('data-id'),
             campo_ide: '<?php echo $tabla_ide ?>',
             tabla: '<?php echo $tabla ?>',
             data: form.serialize(),
         }
         ajax('/grilla/actualizar', param, function(data) {
-            // console.log(data);
+            // alert(data);
             getDataGrilla();
             closeCargar();
             modal.modal('hide');

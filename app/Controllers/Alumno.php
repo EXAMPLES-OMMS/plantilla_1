@@ -8,6 +8,7 @@ use App\Libraries\Componentes;
 use App\Libraries\Funciones;
 use App\Libraries\Lgrilla;
 use App\Libraries\SuperComponente;
+use App\Models\Mgrilla;
 
 class Alumno extends BaseController
 {
@@ -104,6 +105,8 @@ class Alumno extends BaseController
         // $expe = "expedientes_" . $this->inst->inst_sufijo;
         $lgrilla->setTablaPrincipal('usuarios');
         $lgrilla->setTablaSecundaria('perfiles', 'usua_perf_ide = perf_ide', 'left');
+        $general = new Generaldb;
+        $perfiles = $general->selectSomeData('perf_ide as id, perf_nombre as nombre','perfiles');
         // $lgrilla->setTablaSecundaria("tipos_expedientes", "expe_tiex_ide = tiex_ide");
         // $lgrilla->setTablaSecundaria("remitentes", "remi_ide = expe_remi_ide");
         $lgrilla->getCampos();
@@ -114,13 +117,14 @@ class Alumno extends BaseController
         );
         $lgrilla->setIde('usua_ide');
         $lgrilla->setOrden("usua_ide");
-        //TODO: $edit to arr [edit = true, type = 'text', value = '']
+        //TODO: $edit to arr [edit = true, type = 'text', data = []]
         $lgrilla->setColumna("usua_ide","Nº","10",['Edit' => false],"no");
         $lgrilla->setColumna("usua_nombres","Nombres","10",['Edit' => true] ,"no");
         $lgrilla->setColumna("usua_apellidos","Apellidos","10",['Edit' => true],"no");
         $lgrilla->setColumna("usua_email","Email","10",['Edit' => true, 'Type' => 'email'],"no");
         $lgrilla->setColumna("usua_estado","Estado","10",['Edit' => true],"no");
-        $lgrilla->setColumna("perf_nombre","Perfil","10",['Edit' => true],"no");
+        // $lgrilla->setColumna("perf_nombre","Perfil","10",['Edit' => true],"no");
+        $lgrilla->setColumna("usua_perf_ide","Perfil","10",['Edit' => true, 'Type' => 'selectDB', 'Data' => $perfiles],"no");
 
         $lgrilla->setTituloTabla("Lista de usuarios");
         $lgrilla->setWidthTabla("100%");
@@ -157,6 +161,45 @@ class Alumno extends BaseController
             //         $('#modal_asignar_anio_numero').modal('show');
             //     });
             // ");
+        }
+    }
+    public function acceso() {
+        $m = $this->request->getVar("m");
+        $p = $this->request->getVar("p");
+        $b = $this->request->getVar("b");
+
+        $lgrilla = new Lgrilla;
+        $lgrilla->setURL("alumno/acceso");
+        // $expe = "expedientes_" . $this->inst->inst_sufijo;
+        $lgrilla->setTablaPrincipal('accesos');
+        // $lgrilla->setTablaSecundaria('perfiles', 'acce_perf_ide = perf_ide', 'left');
+        $general = new Generaldb;
+
+        $estados = $general->selectSomeData('esta_ide as id, esta_nombre as nombre','estados');
+        $perfiles = $general->selectSomeData('perf_ide as id, perf_nombre as nombre','perfiles');
+
+        $lgrilla->getCampos();
+        $lgrilla->setWhere(
+            array(
+                // "usua_inst_ide" => $this->session->inst_ide,
+            )
+        );
+        $lgrilla->setIde('acce_ide');
+        $lgrilla->setOrden("acce_ide");
+        //TODO: $edit to arr [edit = true, type = 'text', data = []]
+        $lgrilla->setColumna("acce_ide","Nº","10",['Edit' => false],"no");
+        $lgrilla->setColumna('acce_perf_ide','perfil', '10', ['Edit'=>true, 'Type' => 'selectDB', 'Data' => $perfiles], 'no');
+        $lgrilla->setColumna('acce_freg','fecha', '10', ['Edit'=>true], 'no');
+        $lgrilla->setColumna('acce_esta_ide','estado', '10', ['Edit'=>true, 'Type' => 'selectDB', 'Data' => $estados], 'no');
+
+        $lgrilla->setTituloTabla("Lista de accesos");
+        $lgrilla->setWidthTabla("100%");
+        $lgrilla->setlistaMostrar(array("10", "20", "30", "40", "50"));
+
+        if (!$this->request->getVar("load")) {
+            $lgrilla->mostrarGrilla("grilla_accesos");
+        } else {
+            $lgrilla->mostrarDataGrilla($m, $p, $b, "grilla_accesos");
         }
     }
 }

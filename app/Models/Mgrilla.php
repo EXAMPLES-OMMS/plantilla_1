@@ -83,12 +83,12 @@ class Mgrilla extends Model
 		$query = $builder->get();
 		return $query->getResult();
 	}
-	public function actualizarData($ide, $campo_ide, $tabla, $data)
+	public function actualizar($tabla, $where, $data)
 	{
 		$db = \Config\Database::connect();
 
 		$builder = $db->table($tabla);
-		$builder->where($campo_ide, $ide);
+		$builder->where($where);
 		$builder->update($data);
 	}
 	public function eliminar($ide, $campo_ide, $tabla) {

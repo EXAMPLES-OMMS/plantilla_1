@@ -56,7 +56,7 @@ class Lgrilla
                 "Type" => $reg->Type,
                 "Type1" => $type,
                 "Visible" => false,
-                "Extra" => ['Edit' => true, 'Type' => 'text', 'Id' => strtolower($reg->Field)],
+                "Extra" => ['Edit' => true, 'Type' => 'text', 'Id' => strtolower($reg->Field), 'Data' => []],
                 "Label" => "",
                 "Width" => "",
                 "Format" => "no"
@@ -75,7 +75,7 @@ class Lgrilla
                     "Type" => $reg->Type,
                     "Type1" => $type,
                     "Visible" => false,
-                    "Extra" => ['Edit' => true, 'Type' => 'text', 'Id' => strtolower($reg->Field)],
+                    "Extra" => ['Edit' => true, 'Type' => 'text', 'Id' => strtolower($reg->Field), 'Data' => []],
                     "Label" => "",
                     "Width" => "",
                     "Format" => "no"
@@ -144,6 +144,7 @@ class Lgrilla
         $this->campos[$campo]["Extra"]['Edit'] = $extra['Edit'] ?? $this->campos[$campo]["Extra"]['Edit'];
         $this->campos[$campo]["Extra"]['Type'] = $extra['Type'] ?? $this->campos[$campo]["Extra"]['Type'];
         $this->campos[$campo]["Extra"]['Id'] = $extra['Id'] ?? $this->campos[$campo]["Extra"]['Id'];
+        $this->campos[$campo]["Extra"]['Data'] = $extra['Data'] ?? $this->campos[$campo]["Extra"]['Data'];
         $this->campos[$campo]["Width"] = $width;
         $this->campos[$campo]["Format"] = $format;
         $this->columnas[] = $campo;

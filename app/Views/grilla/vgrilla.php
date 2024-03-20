@@ -35,6 +35,8 @@ use App\Libraries\Componentes;
                                     ];
                                 }
                                 $body->agregar($c->Select($campo['Extra']['Id'], $campo['Label'], $select_reg, '', '', ''));
+                            } else if ($campo['Extra']['Type'] == 'selectDB') {
+                                $body->agregar($c->Select($campo['Extra']['Id'], $campo['Label'], $campo['Extra']['Data'],'',true,''));
                             } else
                                 $body->agregar($c->Input($campo['Extra']['Id'], $campo['Extra']['Type'], '', $campo['Label'], 'primary'));
                         }

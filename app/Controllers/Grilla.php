@@ -25,7 +25,6 @@ class Grilla extends BaseController
         $tabla = $this->request->getPost('tabla');
         $data = [];
         parse_str("" . $this->request->getPost('data'), $data);
-        $data = array_slice($data, 0, count($data) - 1);
         $data['usua_inst_ide'] = $session->inst_ide;
         $g = new Mgrilla;
         $g->insertar($tabla, $data);
@@ -38,9 +37,9 @@ class Grilla extends BaseController
         $tabla = $this->request->getPost('tabla');
         $data = [];
         parse_str("" . $this->request->getPost('data'), $data);
-        $data = array_slice($data, 0, count($data) - 1);
         $g = new Mgrilla;
-        // print_r($data);
+        $where = [ $campo_ide => $ide, ];
+        $g->actualizar($tabla, $where, $data);
         $g->actualizarData($ide, $campo_ide, $tabla, $data);
         return json_encode($g->getData2($ide, $campo_ide, $tabla));
     }
